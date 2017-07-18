@@ -1,10 +1,30 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#include "stdlib.h"
+
+/* comment this when program is live */
+#define DEBUG
+
+#ifndef DEBUG
+#define ASSERT(n)
+#else
+#define ASSERT(n) \
+if(!(n)) { \
+  printf("%s - Failed ", #n); \
+  printf("On %s ", __DATE__); \
+  printf("At %s ", __TIME__); \
+  printf("In File %s ", __FILE__); \
+  printf("At Line %d\n", __LINE__); \
+  exit(1);}
+#endif
+
 typedef unsigned long long U64;
 
 #define NAME "David Chess Engine 1.0"
 #define BRD_SQ_NUM 120
+
+#define MAXGAMEMOVES 2048
 
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
 enum {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
@@ -24,6 +44,18 @@ enum {
 
 enum {FALSE, TRUE};
 
+enum {WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8};
+
+typedef struct {
+
+  int move;
+  int castlePerm;
+  int enPas;
+  int fiftyMove;
+  U64 posKey;
+
+} S_UNDO;
+
 typedef struct {
 
   int pieces[BRD_SQ_NUM];
@@ -38,6 +70,8 @@ typedef struct {
   int ply;
   int hisPly;
 
+  int castlePerm;
+
   U64 posKey;
 
   int pceNum[13];
@@ -45,8 +79,25 @@ typedef struct {
   int majPce[3];
   int minPce[3];
 
+  S_UNDO history[MAXGAMEMOVES];
+
+  int pList[13][10];
+
 } S_BOARD;
+
+/* MACROS */
+
+#define FR2SQ(f, r) ((21 + f) + (r) * 10)
+
+/* GLOBALS */
+
+extern int Sq120ToSq64[BRD_SQ_NUM];
+extern int Sq64ToSq120[64];
+
+/* FUNCTIONS */
+
+extern void AllInit();
 
 #endif
 
-/* part5 */
+/* part8 */
