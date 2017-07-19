@@ -1,36 +1,37 @@
 #include "stdio.h"
 #include "defs.h"
 #include "init.c"
+#include "bitboards.c"
 
 
 int main() {
 
   AllInit();
 
-  int num = 4;
-  int david = 30;
+  U64 playBitBoard = 0ULL;
 
-  ASSERT(num == david);
-/*
-  int index = 0;
+  printf("start:\n\n");
+  PrintBitBoard(playBitBoard);
 
-  for(index = 0; index < BRD_SQ_NUM; ++index) {
-    if(index % 10 == 0) printf("\n");
-    printf("%5d", Sq120ToSq64[index]);
-  }
+  playBitBoard |= (1ULL << SQ64(D2));
+  printf("D2 Added: \n\n");
+  PrintBitBoard(playBitBoard);
 
-  printf("\n");
-  printf("\n");
+  playBitBoard |= (1ULL << SQ64(G5));
+  printf("G5 Added: \n\n");
+  PrintBitBoard(playBitBoard);
 
-  for(index = 0; index < 64; ++index) {
-    if(index % 8 == 0) printf("\n");
-    printf("%5d", Sq64ToSq120[index]);
-  }
+  printf("\n\n");
 
-  printf("\n");
-  printf("\n");
+  int count = CNT(playBitBoard);
 
-  */
+  printf("Count:%d\n\n", count);
+
+  int index = POP(&playBitBoard);
+  printf("index:%d\n", index);
+  PrintBitBoard(playBitBoard);
+  count = CNT(playBitBoard);
+  printf("Count:%d\n\n", count);
 
   return 0;
 }
