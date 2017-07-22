@@ -91,19 +91,32 @@ typedef struct {
 #define SQ64(sq120) Sq120ToSq64[sq120]
 #define POP(b) PopBit(b)
 #define CNT(b) CountBits(b)
+#define CLRBIT(bb, sq) ((bb) &= ClearMask[(sq)])
+#define SETBIT(bb, sq) ((bb) |= SetMask[(sq)])
 
 /* GLOBALS */
 
 extern int Sq120ToSq64[BRD_SQ_NUM];
 extern int Sq64ToSq120[64];
+extern U64 SetMask[64];
+extern U64 ClearMask[64];
+extern U64 PieceKeys[13][120];
+extern U64 SideKey;
+extern U64 CastleKeys[16];
 
 /* FUNCTIONS */
 
+// init.c
 extern void AllInit();
+
+//bitboards.c
 extern void PrintBitBoard(U64 bb);
 extern int PopBit(U64 *bb);
 extern int CountBits(U64 b);
 
+// hashkeys.c
+extern U64 GeneratePosKey(const S_BOARD *pos)
+
 #endif
 
-/* part8 */
+/* part 13 */
